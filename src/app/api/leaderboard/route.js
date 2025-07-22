@@ -51,14 +51,54 @@ export async function POST(request) {
       [name.trim(), score, timeSpent, category]
     );
     
-    // Update stats
+    // Ensure stats table exists
+    const [existingStats] = await connection.execute(
+      'SELECT id FROM quiz_stats WHERE id = 1'
+    );
+    
+    if (existingStats.length === 0) {
+      // Initialize stats table if empty
+      await connection.execute(`
+        INSERT INTO quiz_stats (id, total_quizzes, total_users, average_score, category_performance) 
+        VALUES (1, 0, 0, 0, '{"Programming Quiz": 0, "Web Development": 0, "JavaScript": 0}')
+      `);
+    }
+    
+    // Update comprehensive stats
     await connection.execute(`
       UPDATE quiz_stats 
-      SET total_quizzes = total_quizzes + 1,
+      SET total_quizzes = (SELECT COUNT(*) FROM leaderboard),
           total_users = (SELECT COUNT(DISTINCT name) FROM leaderboard),
-          average_score = (SELECT AVG(score) FROM leaderboard)
+          average_score = (SELECT COALESCE(AVG(score), 0) FROM leaderboard)
       WHERE id = 1
     `);
+    
+    // Update category performance
+    const [categoryStats] = await connection.execute(
+      'SELECT category_performance FROM quiz_stats WHERE id = 1'
+    );
+    
+    if (categoryStats.length > 0) {
+      let categoryPerformance;
+      try {
+        categoryPerformance = JSON.parse(categoryStats[0].category_performance || '{}');
+      } catch (e) {
+        categoryPerformance = {};
+      }
+      
+      // Calculate average score for this category
+      const [categoryAvg] = await connection.execute(
+        'SELECT COALESCE(AVG(score), 0) as avg_score FROM leaderboard WHERE category = ?',
+        [category]
+      );
+      
+      categoryPerformance[category] = Math.round(categoryAvg[0].avg_score || 0);
+      
+      await connection.execute(
+        'UPDATE quiz_stats SET category_performance = ? WHERE id = 1',
+        [JSON.stringify(categoryPerformance)]
+      );
+    }
     
     // Get updated leaderboard
     const [rows] = await connection.execute(

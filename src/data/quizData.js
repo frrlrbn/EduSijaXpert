@@ -241,7 +241,7 @@ export const quizData = [
   },
   {
     id: 21,
-    question: "Manakah yang merupakan framework JavaScript?",
+    question: "Manakah yang merupakan library JavaScript?",
     options: [
       "HTML5",
       "CSS3",

@@ -63,9 +63,14 @@ export async function GET() {
 // POST /api/stats - Update statistics (called after quiz completion)
 export async function POST(request) {
   try {
-    const { score, timeSpent, category = 'General' } = await request.json();
+    const { score, timeSpent, category = 'Programming Quiz', type, data } = await request.json();
     
-    if (typeof score !== 'number' || score < 0 || score > 100) {
+    // Extract data from nested structure if needed
+    const actualScore = data?.score || score;
+    const actualTimeSpent = data?.timeSpent || timeSpent;
+    const actualCategory = data?.category || category;
+    
+    if (typeof actualScore !== 'number' || actualScore < 0 || actualScore > 100) {
       return NextResponse.json(
         { success: false, error: 'Invalid score provided' },
         { status: 400 }
@@ -74,8 +79,57 @@ export async function POST(request) {
     
     const connection = await getConnection();
     
-    // This will be handled by the leaderboard API when a score is submitted
-    // Just return success for now
+    // Check if stats table exists and has data
+    const [existingStats] = await connection.execute(
+      'SELECT id FROM quiz_stats WHERE id = 1'
+    );
+    
+    if (existingStats.length === 0) {
+      // Initialize stats table if empty
+      await connection.execute(`
+        INSERT INTO quiz_stats (id, total_quizzes, total_users, average_score, category_performance) 
+        VALUES (1, 0, 0, 0, '{"Programming Quiz": 0, "Web Development": 0, "JavaScript": 0}')
+      `);
+    }
+    
+    // Update quiz statistics
+    await connection.execute(`
+      UPDATE quiz_stats 
+      SET total_quizzes = (SELECT COUNT(*) FROM leaderboard),
+          total_users = (SELECT COUNT(DISTINCT name) FROM leaderboard),
+          average_score = (SELECT COALESCE(AVG(score), 0) FROM leaderboard)
+      WHERE id = 1
+    `);
+    
+    // Update category performance if needed
+    if (actualCategory) {
+      const [categoryStats] = await connection.execute(
+        'SELECT category_performance FROM quiz_stats WHERE id = 1'
+      );
+      
+      if (categoryStats.length > 0) {
+        let categoryPerformance;
+        try {
+          categoryPerformance = JSON.parse(categoryStats[0].category_performance || '{}');
+        } catch (e) {
+          categoryPerformance = {};
+        }
+        
+        // Calculate average score for this category
+        const [categoryAvg] = await connection.execute(
+          'SELECT COALESCE(AVG(score), 0) as avg_score FROM leaderboard WHERE category = ?',
+          [actualCategory]
+        );
+        
+        categoryPerformance[actualCategory] = Math.round(categoryAvg[0].avg_score);
+        
+        await connection.execute(
+          'UPDATE quiz_stats SET category_performance = ? WHERE id = 1',
+          [JSON.stringify(categoryPerformance)]
+        );
+      }
+    }
+    
     return NextResponse.json({
       success: true,
       message: 'Statistics updated successfully'

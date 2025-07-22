@@ -86,35 +86,60 @@ const Leaderboard = ({ isOpen, onClose, currentScore = null, viewOnly = false, p
   };
 
   const formatTime = (seconds) => {
+    // Handle invalid or undefined values
+    if (!seconds || isNaN(seconds) || seconds < 0) {
+      return '0:00';
+    }
+    
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const formatDate = (timestamp) => {
+    if (!timestamp) return 'Unknown date';
+    
+    try {
+      const date = new Date(timestamp);
+      if (isNaN(date.getTime())) return 'Unknown date';
+      
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch (error) {
+      return 'Unknown date';
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className="w-full max-w-2xl max-h-[80vh] overflow-hidden"
+        className="w-full max-w-2xl my-8 mx-auto"
       >
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-6">
+        <Card className="p-4 md:p-6 max-h-[90vh] flex flex-col">
+          <div className="flex items-center justify-between mb-4 md:mb-6 flex-shrink-0">
             <div className="flex items-center gap-3">
-              <Trophy className="text-yellow-500" size={28} />
-              <h2 className="text-2xl font-bold text-on-surface">Leaderboard</h2>
+              <Trophy className="text-yellow-500 w-6 h-6 md:w-7 md:h-7" />
+              <h2 className="text-xl md:text-2xl font-bold text-on-surface">Leaderboard</h2>
             </div>
             <Button
               variant="text"
               onClick={onClose}
-              className="text-on-surface-variant hover:text-on-surface"
+              className="text-on-surface-variant hover:text-on-surface p-1"
             >
               ✕
             </Button>
           </div>
+
+          {/* Scrollable content area */}
+          <div className="flex-1 overflow-y-auto space-y-4 md:space-y-6 pr-2 -mr-2">
 
           {/* Current Score Display (viewOnly) */}
           {viewOnly && currentScore && playerName && (
@@ -230,14 +255,14 @@ const Leaderboard = ({ isOpen, onClose, currentScore = null, viewOnly = false, p
                       </div>
                       <div>
                         <p className="font-semibold">{entry.name}</p>
-                        <p className="text-sm opacity-75">{entry.date}</p>
+                        <p className="text-sm opacity-75">{formatDate(entry.timestamp)}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-lg">{entry.score}%</p>
                       <div className="flex items-center gap-1 text-sm opacity-75">
                         <Clock size={12} />
-                        {formatTime(entry.time)}
+                        {formatTime(entry.timeSpent)}
                       </div>
                     </div>
                   </motion.div>
@@ -249,8 +274,10 @@ const Leaderboard = ({ isOpen, onClose, currentScore = null, viewOnly = false, p
               </div>
             )}
           </div>
+          </div>
 
-          <div className="mt-6 pt-4 border-t border-outline">
+          {/* Fixed bottom section */}
+          <div className="mt-4 md:mt-6 pt-4 border-t border-outline flex-shrink-0">
             <Button
               variant="outlined"
               onClick={onClose}

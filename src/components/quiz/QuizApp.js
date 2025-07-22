@@ -82,9 +82,42 @@ const QuizApp = () => {
       if (data.success) {
         setScoreSubmitted(true);
         console.log('Score submitted successfully');
+        
+        // Also update platform stats directly
+        await updatePlatformStats(results);
       }
     } catch (error) {
       console.error('Score submission failed:', error);
+    }
+  };
+
+  const updatePlatformStats = async (results) => {
+    try {
+      console.log('Updating platform stats from QuizApp:', results);
+      
+      await fetch('/api/stats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'quiz_completed',
+          score: results.percentage,
+          timeSpent: timeSpent,
+          category: 'Programming Quiz',
+          data: {
+            score: results.percentage,
+            category: 'Programming Quiz',
+            correctAnswers: results.correctAnswers,
+            totalQuestions: results.totalQuestions,
+            timeSpent: timeSpent
+          }
+        }),
+      });
+      
+      console.log('Platform stats updated from QuizApp');
+    } catch (error) {
+      console.error('Failed to update platform stats from QuizApp:', error);
     }
   };
 

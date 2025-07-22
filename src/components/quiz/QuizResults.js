@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Clock, Target, RotateCcw, Share2, TrendingUp } from 'lucide-react';
+import { Trophy, Clock, Target, RotateCcw, Share2, TrendingUp, Home } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import ProgressBar from '../ui/ProgressBar';
@@ -21,23 +21,35 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
 
   const updateStats = async () => {
     try {
-      await fetch('/api/stats', {
+      console.log('Updating platform stats:', { percentage, timeSpent, correctAnswers, totalQuestions });
+      
+      const response = await fetch('/api/stats', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           type: 'quiz_completed',
+          score: percentage,
+          timeSpent: timeSpent,
+          category: 'Programming Quiz',
           data: {
             score: percentage,
-            category: 'general', // You can make this dynamic based on quiz category
+            category: 'Programming Quiz',
             correctAnswers,
             totalQuestions,
             timeSpent
           }
         }),
       });
-      setStatsUpdated(true);
+      
+      const result = await response.json();
+      if (result.success) {
+        setStatsUpdated(true);
+        console.log('Platform stats updated successfully');
+      } else {
+        console.error('Failed to update platform stats:', result.error);
+      }
     } catch (error) {
       console.error('Failed to update stats:', error);
     }
@@ -82,6 +94,11 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
   };
 
   const achievements = getAchievementBadges(percentage, timeSpent, totalQuestions);
+
+  const handleBackToHome = () => {
+    // Refresh the entire website to go back to welcome screen
+    window.location.reload();
+  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -372,6 +389,24 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           >
             <span className="hidden sm:inline">Bagikan</span>
             <span className="sm:hidden">Share</span>
+          </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.9 }}
+          className="w-full md:w-auto"
+        >
+          <Button
+            variant="outlined"
+            size="medium"
+            icon={<Home size={16} className="md:w-[18px] md:h-[18px]" />}
+            className="w-full md:w-auto md:flex-none text-sm md:text-base py-2 min-h-[44px] md:min-h-[40px] border-primary text-primary hover:bg-primary hover:text-on-primary"
+            onClick={handleBackToHome}
+          >
+            <span className="hidden sm:inline">Back to Home</span>
+            <span className="sm:hidden">Home</span>
           </Button>
         </motion.div>
       </motion.div>
