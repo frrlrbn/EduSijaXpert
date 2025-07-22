@@ -1,5 +1,12 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const figtree = localFont({
+  src: "../../public/fonts/Figtree.ttf",
+  variable: "--font-figtree",
+  display: "swap",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "EduSijaXpert - Test Your Programming Knowledge",
+  title: "edufrl. - Test Your Programming Knowledge",
   description: "Advanced interactive quiz app built with Next.js. Test your web development and programming skills with 25 challenging questions. Features Material 3 design, dark mode, and real-time statistics.",
   keywords: "quiz, programming, web development, javascript, react, nextjs, tailwind css, interactive quiz, coding test",
   authors: [{ name: "Prozy Dev" }],
@@ -22,9 +29,9 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    title: "EduSijaXpert - Test Your Programming Knowledge",
+    title: "edufrl. - Test Your Programming Knowledge",
     description: "Advanced interactive quiz app built with Next.js. Test your web development and programming skills with 10 challenging questions.",
-    siteName: "EduSijaXpert",
+    siteName: "edufrl.",
     images: [
       {
         url: "/og-image.png",
@@ -36,7 +43,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "EduSijaXpert - Test Your Programming Knowledge",
+    title: "edufrl. - Test Your Programming Knowledge",
     description: "Advanced interactive quiz app built with Next.js. Test your programming skills now!",
     images: ["/og-image.png"],
     creator: "@prozydev",
@@ -63,7 +70,7 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${figtree.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-figtree`}
         suppressHydrationWarning
       >
         {children}

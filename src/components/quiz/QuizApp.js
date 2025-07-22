@@ -12,6 +12,7 @@ import KeyboardShortcuts from '../ui/KeyboardShortcuts';
 import KeyboardShortcutsHelp from '../ui/KeyboardShortcutsHelp';
 import QuizStats from './QuizStats';
 import FloatingStats from '../ui/FloatingStats';
+import Footer from '../ui/Footer';
 
 const QuizApp = () => {
   const [currentView, setCurrentView] = useState('welcome'); // welcome, quiz, results, review
@@ -335,6 +336,8 @@ const QuizApp = () => {
           )}
         </AnimatePresence>
       </div>
+      
+      <Footer />
     </div>
   );
 };

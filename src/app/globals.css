@@ -1,4 +1,13 @@
 @import "tailwindcss";
+@import "./fonts.css";
+
+/* Custom Fonts */
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/Figtree.ttf') format('truetype');
+  font-display: swap;
+  font-weight: 300 900;
+}
 
 :root {
   /* Material 3 Expressive Monochrome Color Palette */
@@ -47,7 +56,7 @@
 body {
   background: var(--surface);
   color: var(--on-surface);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Figtree', system-ui, -apple-system, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }

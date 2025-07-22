@@ -78,7 +78,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
         
         <div className="space-y-6">
           <h1 className="text-5xl md:text-6xl font-bold text-on-surface leading-tight">
-            <span className="block">EduSijaXpert</span>
+            <span className="block">edufrl.</span>
             <span className="block text-on-surface/70">Quiz Challenge</span>
           </h1>
           <p className="text-xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed">
