@@ -1,26 +1,462 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Material 3 Expressive Monochrome Color Palette */
+  --surface: #fefefe;
+  --on-surface: #1d1d1d;
+  --surface-variant: #f5f5f5;
+  --on-surface-variant: #484848;
+  --surface-container: #f0f0f0;
+  --surface-container-high: #ebebeb;
+  --surface-container-highest: #e6e6e6;
+  --outline: #797979;
+  --outline-variant: #c9c9c9;
+  --primary: #2d2d2d;
+  --on-primary: #ffffff;
+  --primary-container: #e8e8e8;
+  --on-primary-container: #1a1a1a;
+  --secondary: #5d5d5d;
+  --on-secondary: #ffffff;
+  --secondary-container: #e1e1e1;
+  --on-secondary-container: #191919;
+  --tertiary: #434343;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #dadada;
+  --on-tertiary-container: #161616;
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+  --success: #006c4c;
+  --on-success: #ffffff;
+  --success-container: #74f8c7;
+  --on-success-container: #002114;
+  --warning: #735b00;
+  --on-warning: #ffffff;
+  --warning-container: #fff0c3;
+  --on-warning-container: #241a00;
+  
+  /* Elevation shadows */
+  --elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --elevation-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --elevation-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --elevation-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3), 0 8px 12px 6px rgba(0, 0, 0, 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+body {
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-variant);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--outline);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--on-surface-variant);
+}
+
+/* Smooth animations */
+* {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Tailwind utilities */
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-on-surface {
+  background-color: var(--on-surface);
+}
+
+.bg-surface-variant {
+  background-color: var(--surface-variant);
+}
+
+.bg-on-surface-variant {
+  background-color: var(--on-surface-variant);
+}
+
+.bg-surface-container {
+  background-color: var(--surface-container);
+}
+
+.bg-surface-container-high {
+  background-color: var(--surface-container-high);
+}
+
+.bg-surface-container-highest {
+  background-color: var(--surface-container-highest);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-on-primary {
+  background-color: var(--on-primary);
+}
+
+.bg-primary-container {
+  background-color: var(--primary-container);
+}
+
+.bg-on-primary-container {
+  background-color: var(--on-primary-container);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-on-secondary {
+  background-color: var(--on-secondary);
+}
+
+.bg-secondary-container {
+  background-color: var(--secondary-container);
+}
+
+.bg-on-secondary-container {
+  background-color: var(--on-secondary-container);
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary);
+}
+
+.bg-on-tertiary {
+  background-color: var(--on-tertiary);
+}
+
+.bg-tertiary-container {
+  background-color: var(--tertiary-container);
+}
+
+.bg-on-tertiary-container {
+  background-color: var(--on-tertiary-container);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.bg-on-error {
+  background-color: var(--on-error);
+}
+
+.bg-error-container {
+  background-color: var(--error-container);
+}
+
+.bg-on-error-container {
+  background-color: var(--on-error-container);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+.bg-on-success {
+  background-color: var(--on-success);
+}
+
+.bg-success-container {
+  background-color: var(--success-container);
+}
+
+.bg-on-success-container {
+  background-color: var(--on-success-container);
+}
+
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.bg-on-warning {
+  background-color: var(--on-warning);
+}
+
+.bg-warning-container {
+  background-color: var(--warning-container);
+}
+
+.bg-on-warning-container {
+  background-color: var(--on-warning-container);
+}
+
+/* Text colors */
+.text-surface {
+  color: var(--surface);
+}
+
+.text-on-surface {
+  color: var(--on-surface);
+}
+
+.text-surface-variant {
+  color: var(--surface-variant);
+}
+
+.text-on-surface-variant {
+  color: var(--on-surface-variant);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-on-primary {
+  color: var(--on-primary);
+}
+
+.text-on-primary-container {
+  color: var(--on-primary-container);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.text-on-secondary {
+  color: var(--on-secondary);
+}
+
+.text-on-secondary-container {
+  color: var(--on-secondary-container);
+}
+
+.text-tertiary {
+  color: var(--tertiary);
+}
+
+.text-on-tertiary {
+  color: var(--on-tertiary);
+}
+
+.text-on-tertiary-container {
+  color: var(--on-tertiary-container);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-on-error {
+  color: var(--on-error);
+}
+
+.text-on-error-container {
+  color: var(--on-error-container);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-on-success {
+  color: var(--on-success);
+}
+
+.text-on-success-container {
+  color: var(--on-success-container);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-on-warning {
+  color: var(--on-warning);
+}
+
+.text-on-warning-container {
+  color: var(--on-warning-container);
+}
+
+/* Border colors */
+.border-outline {
+  border-color: var(--outline);
+}
+
+.border-outline-variant {
+  border-color: var(--outline-variant);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-secondary {
+  border-color: var(--secondary);
+}
+
+.border-tertiary {
+  border-color: var(--tertiary);
+}
+
+.border-error {
+  border-color: var(--error);
+}
+
+.border-success {
+  border-color: var(--success);
+}
+
+.border-warning {
+  border-color: var(--warning);
+}
+
+/* Surface elevation styles */
+.elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+.elevation-2 {
+  box-shadow: var(--elevation-2);
+}
+
+.elevation-3 {
+  box-shadow: var(--elevation-3);
+}
+
+.elevation-4 {
+  box-shadow: var(--elevation-4);
+}
+
+.elevation-5 {
+  box-shadow: var(--elevation-5);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --surface: #121212;
+    --on-surface: #e3e3e3;
+    --surface-variant: #1e1e1e;
+    --on-surface-variant: #c7c7c7;
+    --surface-container: #1a1a1a;
+    --surface-container-high: #252525;
+    --surface-container-highest: #303030;
+    --outline: #969696;
+    --outline-variant: #484848;
+    --primary: #d0d0d0;
+    --on-primary: #2d2d2d;
+    --primary-container: #434343;
+    --on-primary-container: #ececec;
+    --secondary: #c4c4c4;
+    --on-secondary: #2f2f2f;
+    --secondary-container: #454545;
+    --on-secondary-container: #e0e0e0;
+    --tertiary: #bdbdbd;
+    --on-tertiary: #2a2a2a;
+    --tertiary-container: #404040;
+    --on-tertiary-container: #d9d9d9;
+    --error: #ffb4ab;
+    --on-error: #690005;
+    --error-container: #93000a;
+    --on-error-container: #ffdad6;
+    --success: #54d6a1;
+    --on-success: #003828;
+    --success-container: #005139;
+    --on-success-container: #74f8c7;
+    --warning: #e4c441;
+    --on-warning: #3e2e00;
+    --warning-container: #594400;
+    --on-warning-container: #fff0c3;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-variant);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--outline);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--on-surface-variant);
+}
+
+/* Material 3 button styles */
+.btn-filled {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--elevation-1);
+}
+
+.btn-filled:hover {
+  box-shadow: var(--elevation-2);
+}
+
+.btn-outlined {
+  border: 1px solid var(--outline);
+  color: var(--primary);
+  background: transparent;
+}
+
+.btn-text {
+  color: var(--primary);
+  background: transparent;
+}
+
+.btn-tonal {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+/* Surface elevation styles */
+.elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+.elevation-2 {
+  box-shadow: var(--elevation-2);
+}
+
+.elevation-3 {
+  box-shadow: var(--elevation-3);
+}
+
+.elevation-4 {
+  box-shadow: var(--elevation-4);
+}
+
+.elevation-5 {
+  box-shadow: var(--elevation-5);
 }
