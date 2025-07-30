@@ -1,326 +1,206 @@
 export const quizData = [
   {
-    id: 1,
-    question: "Apa kepanjangan dari HTML?",
-    options: [
-      "Hyper Text Markup Language",
-      "High Tech Modern Language",
-      "Home Tool Markup Language",
-      "Hyperlink and Text Markup Language"
+    "id": 1,
+    "question": "Apa makna Pancasila sebagai pandangan hidup bangsa Indonesia?",
+    "options": [
+      "Dasar negara yang hanya dipelajari secara teoritis",
+      "Landasan nilai yang digali dari tradisi dan budaya bangsa",
+      "Konsep politik yang diciptakan oleh pemerintah modern",
+      "Ideologi yang hanya berlaku saat upacara kenegaraan"
     ],
-    correctAnswer: 0,
-    explanation: "HTML adalah singkatan dari HyperText Markup Language, bahasa markup standar untuk membuat halaman web dan aplikasi web."
+    "correctAnswer": 1,
+    "explanation": "Pancasila sebagai pandangan hidup bangsa Indonesia digali dari tradisi dan budaya luhur nenek moyang dan menjadi landasan nilai dalam kehidupan berbangsa dan bernegara."
   },
   {
-    id: 2,
-    question: "Manakah dari berikut yang merupakan bahasa pemrograman?",
-    options: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "JSON"
+    "id": 2,
+    "question": "Siapakah tokoh yang menyatakan bahwa Pancasila adalah 'lima butir mutiara yang indah'?",
+    "options": [
+      "Mohammad Hatta",
+      "Sutan Sjahrir",
+      "Ir. Soekarno",
+      "Ki Hadjar Dewantara"
     ],
-    correctAnswer: 2,
-    explanation: "JavaScript adalah bahasa pemrograman, sedangkan HTML adalah markup language, CSS adalah styling language, dan JSON adalah format data."
+    "correctAnswer": 2,
+    "explanation": "Ir. Soekarno menyatakan bahwa Pancasila bukan ciptaan baru, melainkan lima butir mutiara yang digali dari tradisi bangsa."
   },
   {
-    id: 3,
-    question: "Apa fungsi utama CSS?",
-    options: [
-      "Membuat struktur halaman web",
-      "Menambahkan interaktivitas",
-      "Mengatur tampilan dan styling",
-      "Menyimpan data"
+    "id": 3,
+    "question": "Contoh tradisi gotong royong di Jawa yang mencerminkan nilai Pancasila adalah …",
+    "options": [
+      "Sinoman",
+      "Ngayuh",
+      "Rambu Solo’",
+      "Marsialapari"
     ],
-    correctAnswer: 2,
-    explanation: "CSS (Cascading Style Sheets) digunakan untuk mengatur tampilan, styling, dan layout halaman web."
+    "correctAnswer": 0,
+    "explanation": "Sinoman di Jawa merupakan salah satu contoh praktik gotong royong yang mencerminkan nilai Pancasila."
   },
   {
-    id: 4,
-    question: "Manakah yang BUKAN merupakan tipe data primitif di JavaScript?",
-    options: [
-      "String",
-      "Number",
-      "Boolean",
-      "Array"
+    "id": 4,
+    "question": "Sila kedua Pancasila adalah …",
+    "options": [
+      "Ketuhanan Yang Maha Esa",
+      "Persatuan Indonesia",
+      "Kemanusiaan yang Adil dan Beradab",
+      "Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan"
     ],
-    correctAnswer: 3,
-    explanation: "Array adalah tipe data non-primitif (object), sedangkan string, number, dan boolean adalah tipe data primitif di JavaScript."
+    "correctAnswer": 2,
+    "explanation": "Sila kedua berbunyi 'Kemanusiaan yang Adil dan Beradab', menekankan penghormatan harkat dan martabat manusia."
   },
   {
-    id: 5,
-    question: "Apa kepanjangan dari CSS?",
-    options: [
-      "Computer Style Sheets",
-      "Cascading Style Sheets",
-      "Creative Style Sheets",
-      "Colorful Style Sheets"
+    "id": 5,
+    "question": "Nilai apa yang terkandung dalam sila pertama Pancasila?",
+    "options": [
+      "Demokrasi lewat musyawarah",
+      "Kebebasan beragama dan penghormatan antarumat",
+      "Persatuan dalam keberagaman",
+      "Keadilan sosial bagi seluruh rakyat"
     ],
-    correctAnswer: 1,
-    explanation: "CSS adalah singkatan dari Cascading Style Sheets, yang digunakan untuk mengatur tampilan halaman web."
+    "correctAnswer": 1,
+    "explanation": "Sila pertama 'Ketuhanan Yang Maha Esa' mengandung nilai religiusitas, kebebasan beragama, dan saling menghormati antarumat."
   },
   {
-    id: 6,
-    question: "Dalam HTML, tag mana yang digunakan untuk membuat heading terbesar?",
-    options: [
-      "<h6>",
-      "<h3>",
-      "<h1>",
-      "<header>"
+    "id": 6,
+    "question": "Menurut survei Kompas 2022, persentase masyarakat yang menilai pengamalan Pancasila memburuk adalah …",
+    "options": [
+      "66,9%",
+      "45,8%",
+      "30,3%",
+      "15,7%"
     ],
-    correctAnswer: 2,
-    explanation: "Tag <h1> digunakan untuk membuat heading terbesar dalam HTML, dengan ukuran yang semakin kecil dari h1 hingga h6."
+    "correctAnswer": 2,
+    "explanation": "Menurut data, 30,3% masyarakat menilai bahwa pengamalan Pancasila memburuk pada 2022."
   },
   {
-    id: 7,
-    question: "Apa yang dimaksud dengan variabel dalam pemrograman?",
-    options: [
-      "Sebuah fungsi",
-      "Tempat penyimpanan data sementara",
-      "Sebuah loop",
-      "Sebuah kondisi"
+    "id": 7,
+    "question": "Apa bentuk nyata pengamalan sila keempat dalam kehidupan sehari-hari?",
+    "options": [
+      "Membeli produk impor",
+      "Melakukan korupsi kecil-kecilan",
+      "Menghormati perbedaan pendapat dan musyawarah",
+      "Memonopoli sumber daya alam"
     ],
-    correctAnswer: 1,
-    explanation: "Variabel adalah tempat penyimpanan data sementara dalam memori yang dapat berubah nilainya selama program berjalan."
+    "correctAnswer": 2,
+    "explanation": "Sila keempat 'Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan' diamalkan melalui musyawarah dan menghormati pendapat."
   },
   {
-    id: 8,
-    question: "Manakah yang merupakan browser web?",
-    options: [
-      "Microsoft Word",
-      "Google Chrome",
-      "Adobe Photoshop",
-      "Visual Studio Code"
+    "id": 8,
+    "question": "Sila ketiga Pancasila menekankan …",
+    "options": [
+      "Keadilan sosial",
+      "Persatuan Indonesia",
+      "Kebebasan berserikat",
+      "Pengakuan atas Tuhan"
     ],
-    correctAnswer: 1,
-    explanation: "Google Chrome adalah browser web untuk mengakses internet, sedangkan yang lain adalah aplikasi software untuk keperluan lain."
+    "correctAnswer": 1,
+    "explanation": "Sila ketiga berbunyi 'Persatuan Indonesia', mengedepankan semangat kebangsaan dan kebersamaan dalam keberagaman."
   },
   {
-    id: 9,
-    question: "Apa fungsi dari tag <p> dalam HTML?",
-    options: [
-      "Membuat gambar",
-      "Membuat paragraf",
-      "Membuat tabel",
-      "Membuat link"
+    "id": 9,
+    "question": "Implementasi sila kelima Pancasila mencakup …",
+    "options": [
+      "Menolak musyawarah",
+      "Mengutamakan kepentingan pribadi",
+      "Memanfaatkan sumber daya alam untuk kemaslahatan bersama",
+      "Mengabaikan hak dasar warga"
     ],
-    correctAnswer: 1,
-    explanation: "Tag <p> dalam HTML digunakan untuk membuat paragraf teks."
+    "correctAnswer": 2,
+    "explanation": "Sila kelima 'Keadilan Sosial bagi Seluruh Rakyat Indonesia' menuntut pemanfaatan sumber daya alam untuk kepentingan bersama."
   },
   {
-    id: 10,
-    question: "Manakah yang merupakan sistem operasi?",
-    options: [
-      "Microsoft Office",
-      "Google Chrome",
-      "Windows",
-      "Adobe Reader"
+    "id": 10,
+    "question": "Apa tujuan pembuatan portofolio 'Saya Ber-Pancasila' bagi siswa?",
+    "options": [
+      "Dokumentasi dan refleksi pengamalan nilai Pancasila",
+      "Memperoleh nilai ujian yang lebih tinggi",
+      "Mengganti buku teks pelajaran PPKN",
+      "Mengabaikan kegiatan ekstrakurikuler"
     ],
-    correctAnswer: 2,
-    explanation: "Windows adalah sistem operasi, sedangkan yang lain adalah aplikasi software yang berjalan di atas sistem operasi."
+    "correctAnswer": 0,
+    "explanation": "Portofolio 'Saya Ber-Pancasila' berfungsi sebagai sarana dokumentasi dan refleksi pengamalan nilai-nilai Pancasila."
   },
   {
-    id: 11,
-    question: "Apa kepanjangan dari URL?",
-    options: [
-      "Universal Resource Locator",
-      "Uniform Resource Locator",
-      "United Resource Locator",
-      "Unique Resource Locator"
+    "id": 11,
+    "question": "Praktik menolong korban bencana alam termasuk pengamalan sila …",
+    "options": [
+      "Sila pertama",
+      "Sila kedua",
+      "Sila ketiga",
+      "Sila keempat"
     ],
-    correctAnswer: 1,
-    explanation: "URL adalah singkatan dari Uniform Resource Locator, yaitu alamat web yang digunakan untuk mengakses halaman di internet."
+    "correctAnswer": 1,
+    "explanation": "Menolong korban bencana menunjukkan sikap empati dan solidaritas, sesuai sila kedua 'Kemanusiaan yang Adil dan Beradab'."
   },
   {
-    id: 12,
-    question: "Dalam JavaScript, bagaimana cara mendeklarasikan variabel?",
-    options: [
-      "variable x = 5",
-      "var x = 5",
-      "x := 5",
-      "declare x = 5"
+    "id": 12,
+    "question": "Dalam konteks Pancasila, apa arti istilah 'Weltanschauung'?",
+    "options": [
+      "Sistem pemerintahan",
+      "Pandangan hidup",
+      "Undang-undang dasar",
+      "Tradisi kuno"
     ],
-    correctAnswer: 1,
-    explanation: "Dalam JavaScript, variabel dapat dideklarasikan menggunakan kata kunci 'var', 'let', atau 'const' diikuti nama variabel."
+    "correctAnswer": 1,
+    "explanation": "Weltanschauung artinya pandangan hidup, yang dalam konteks Pancasila menunjukkan nilai-nilai yang menjadi orientasi berbangsa."
   },
   {
-    id: 13,
-    question: "Apa fungsi dari tag <img> dalam HTML?",
-    options: [
-      "Membuat teks tebal",
-      "Menampilkan gambar",
-      "Membuat link",
-      "Membuat tabel"
+    "id": 13,
+    "question": "Menurut Peraturan BPIP Nomor 2 Tahun 2022, setiap sila Pancasila memiliki makna …",
+    "options": [
+      "Politik praktis",
+      "Filosofis yang mencerminkan jati diri bangsa",
+      "Hanya teks tanpa isi",
+      "Hanya untuk seremonial"
     ],
-    correctAnswer: 1,
-    explanation: "Tag <img> digunakan untuk menampilkan gambar dalam halaman HTML."
+    "correctAnswer": 1,
+    "explanation": "Peraturan BPIP menyatakan bahwa setiap sila memiliki makna filosofis yang mencerminkan jati diri bangsa Indonesia."
   },
   {
-    id: 14,
-    question: "Manakah yang merupakan text editor untuk coding?",
-    options: [
-      "Microsoft Word",
-      "Visual Studio Code",
-      "PowerPoint",
-      "Excel"
+    "id": 14,
+    "question": "Sikap menolak korupsi dan hidup sederhana mencerminkan pengamalan sila …",
+    "options": [
+      "Sila ketiga",
+      "Sila keempat",
+      "Sila kelima",
+      "Sila pertama"
     ],
-    correctAnswer: 1,
-    explanation: "Visual Studio Code adalah text editor yang dirancang khusus untuk programming dan development."
+    "correctAnswer": 2,
+    "explanation": "Menolak korupsi dan hidup sederhana adalah bagian dari keadilan sosial, sesuai sila kelima."
   },
   {
-    id: 15,
-    question: "Apa yang dimaksud dengan algoritma?",
-    options: [
-      "Sebuah program komputer",
-      "Langkah-langkah untuk menyelesaikan masalah",
-      "Sebuah bahasa pemrograman",
-      "Sebuah website"
+    "id": 15,
+    "question": "Menghormati ibadah umat lain dan tidak menistakan agama lain mencerminkan sila …",
+    "options": [
+      "Sila pertama",
+      "Sila kedua",
+      "Sila ketiga",
+      "Sila keempat"
     ],
-    correctAnswer: 1,
-    explanation: "Algoritma adalah serangkaian langkah-langkah logis dan sistematis untuk menyelesaikan suatu masalah."
-  },
-  {
-    id: 16,
-    question: "Dalam CSS, properti mana yang digunakan untuk mengubah warna teks?",
-    options: [
-      "background-color",
-      "color",
-      "font-size",
-      "text-decoration"
-    ],
-    correctAnswer: 1,
-    explanation: "Properti 'color' dalam CSS digunakan untuk mengubah warna teks pada elemen HTML."
-  },
-  {
-    id: 17,
-    question: "Apa kepanjangan dari HTTP?",
-    options: [
-      "HyperText Transfer Protocol",
-      "High Tech Transfer Protocol",
-      "Home Text Transfer Protocol",
-      "Hyperlink Transfer Protocol"
-    ],
-    correctAnswer: 0,
-    explanation: "HTTP adalah singkatan dari HyperText Transfer Protocol, protokol komunikasi yang digunakan untuk transfer data di web."
-  },
-  {
-    id: 18,
-    question: "Manakah yang merupakan database management system?",
-    options: [
-      "HTML",
-      "CSS",
-      "MySQL",
-      "JavaScript"
-    ],
-    correctAnswer: 2,
-    explanation: "MySQL adalah database management system (DBMS) yang digunakan untuk mengelola database relational."
-  },
-  {
-    id: 19,
-    question: "Apa fungsi dari tag <a> dalam HTML?",
-    options: [
-      "Membuat gambar",
-      "Membuat link/hyperlink",
-      "Membuat tabel",
-      "Membuat form"
-    ],
-    correctAnswer: 1,
-    explanation: "Tag <a> (anchor) dalam HTML digunakan untuk membuat link atau hyperlink ke halaman atau resource lain."
-  },
-  {
-    id: 20,
-    question: "Dalam pemrograman, apa yang dimaksud dengan loop?",
-    options: [
-      "Sebuah error",
-      "Pengulangan instruksi",
-      "Sebuah variabel",
-      "Sebuah fungsi"
-    ],
-    correctAnswer: 1,
-    explanation: "Loop adalah struktur kontrol yang memungkinkan pengulangan eksekusi sekumpulan instruksi berdasarkan kondisi tertentu."
-  },
-  {
-    id: 21,
-    question: "Manakah yang merupakan library JavaScript?",
-    options: [
-      "HTML5",
-      "CSS3",
-      "React",
-      "MySQL"
-    ],
-    correctAnswer: 2,
-    explanation: "React adalah framework/library JavaScript yang digunakan untuk membangun user interface, terutama untuk aplikasi web."
-  },
-  {
-    id: 22,
-    question: "Apa kepanjangan dari API?",
-    options: [
-      "Application Programming Interface",
-      "Advanced Programming Interface",
-      "Automated Programming Interface",
-      "Application Program Integration"
-    ],
-    correctAnswer: 0,
-    explanation: "API adalah singkatan dari Application Programming Interface, set protokol dan tools untuk membangun aplikasi software."
-  },
-  {
-    id: 23,
-    question: "Dalam HTML, tag mana yang digunakan untuk membuat list tidak berurut?",
-    options: [
-      "<ol>",
-      "<ul>",
-      "<li>",
-      "<list>"
-    ],
-    correctAnswer: 1,
-    explanation: "Tag <ul> (unordered list) digunakan untuk membuat list tidak berurut, dengan item list menggunakan tag <li>."
-  },
-  {
-    id: 24,
-    question: "Apa yang dimaksud dengan responsive design?",
-    options: [
-      "Design yang cepat loading",
-      "Design yang dapat beradaptasi dengan berbagai ukuran layar",
-      "Design yang menggunakan animasi",
-      "Design yang menggunakan banyak warna"
-    ],
-    correctAnswer: 1,
-    explanation: "Responsive design adalah pendekatan design yang memastikan website dapat beradaptasi dan terlihat baik di berbagai ukuran layar dan device."
-  },
-  {
-    id: 25,
-    question: "Manakah yang merupakan version control system?",
-    options: [
-      "HTML",
-      "CSS",
-      "Git",
-      "MySQL"
-    ],
-    correctAnswer: 2,
-    explanation: "Git adalah distributed version control system yang digunakan untuk tracking perubahan dalam source code selama software development."
+    "correctAnswer": 0,
+    "explanation": "Menghormati kebebasan beragama merupakan pengamalan sila pertama 'Ketuhanan Yang Maha Esa'."
   }
 ];
 
 export const quizCategories = [
   {
-    id: 'web-basics',
-    name: 'Web Development Basics',
-    description: 'HTML, CSS, JavaScript dasar',
-    icon: '�',
+    id: 'pancasila-filosofi',
+    name: 'Filosofi Pancasila',
+    description: 'Sejarah, makna, dan filosofi Pancasila',
+    icon: '🇮🇩',
     color: 'primary'
   },
   {
-    id: 'programming',
-    name: 'Programming Fundamentals',
-    description: 'Konsep dasar pemrograman',
-    icon: '💻',
+    id: 'sila-pancasila',
+    name: 'Nilai-Nilai Sila Pancasila',
+    description: 'Pemahaman mendalam setiap sila',
+    icon: '⭐',
     color: 'secondary'
   },
   {
-    id: 'it-general',
-    name: 'IT General Knowledge',
-    description: 'Database, Network, Tools',
-    icon: '�',
+    id: 'pengamalan-pancasila',
+    name: 'Pengamalan Pancasila',
+    description: 'Implementasi dalam kehidupan sehari-hari',
+    icon: '🏛️',
     color: 'tertiary'
   }
 ];

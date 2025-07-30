@@ -6,9 +6,9 @@ import Card from './Card';
 
 const QuoteSection = () => {
   const staticQuote = {
-    text: "Pancasila merupakan pandangan hidup bangsa Indonesia yang berfungsi sebagai tata nilai dalam kehidupan berbangsa dan bernegara.",
-    author: "Peraturan BPIP",
-    category: "Pancasila"
+    text: "The only way to learn a new programming language is by writing programs in it.",
+    author: "Dennis Ritchie",
+    category: "Programming"
   };
 
   return (

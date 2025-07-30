@@ -27,7 +27,7 @@ const Footer = () => {
     {
       category: "Platform",
       items: [
-        { name: "Quiz Programming", href: "" },
+        { name: "Quiz Pancasila", href: "" },
         { name: "Leaderboard", href: "" },
         { name: "Statistik", href: "" },
         { name: "Tentang", href: "" }
@@ -69,8 +69,8 @@ const Footer = () => {
               <h3 className="text-lg font-bold text-on-surface">edufrl.</h3>
             </div>
             <p className="text-sm text-on-surface-variant leading-relaxed mb-4">
-              Platform quiz interaktif untuk menguji dan meningkatkan kemampuan programming Anda. 
-              Dibuat dengan teknologi modern untuk pengalaman belajar yang optimal.
+              Platform quiz interaktif untuk menguji dan meningkatkan pemahaman tentang nilai-nilai Pancasila. 
+              Dibuat dengan teknologi modern untuk pembelajaran yang optimal tentang ideologi bangsa.
             </p>
           </motion.div>
 
@@ -112,7 +112,7 @@ const Footer = () => {
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <div className="text-lg md:text-xl font-bold text-on-primary-container">25+</div>
+              <div className="text-lg md:text-xl font-bold text-on-primary-container">15</div>
               <div className="text-xs md:text-sm text-on-primary-container/80">Soal Quiz</div>
             </div>
             <div>

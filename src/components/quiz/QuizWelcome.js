@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Play, BookOpen, Clock, Target, Brain, Trophy, BarChart3, User } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
-import ProgrammingQuote from '../ui/ProgrammingQuote';
+import PancasilaQuote from '../ui/PancasilaQuote';
 import StatsDashboard from '../ui/StatsDashboard';
 
 const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
@@ -23,8 +23,8 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
   const features = [
     {
       icon: <BookOpen size={24} />,
-      title: "Materi Komprehensif",
-      description: "Pertanyaan seputar web development dan programming"
+      title: "Materi Pancasila",
+      description: "Pertanyaan seputar nilai-nilai Pancasila dan kebangsaan"
     },
     {
       icon: <Clock size={24} />,
@@ -38,8 +38,8 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
     },
     {
       icon: <Brain size={24} />,
-      title: "Tingkatkan Skill",
-      description: "Asah kemampuan programming Anda"
+      title: "Tingkatkan Wawasan",
+      description: "Perkuat pemahaman tentang ideologi bangsa"
     }
   ];
 
@@ -79,11 +79,11 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
         <div className="space-y-6">
           <h1 className="text-5xl md:text-6xl font-bold text-on-surface leading-tight">
             <span className="block">edufrl.</span>
-            <span className="block text-on-surface/70">Quiz Challenge</span>
+            <span className="block text-on-surface/70">Quiz Pancasila</span>
           </h1>
           <p className="text-xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed">
-            Uji kemampuan programming Anda dengan {totalQuestions} pertanyaan pilihan berganda yang mencakup 
-            web development, JavaScript, dan konsep programming fundamental.
+            Uji pemahaman Anda tentang nilai-nilai Pancasila dengan {totalQuestions} pertanyaan pilihan berganda yang mencakup 
+            filosofi, implementasi, dan pengamalan Pancasila dalam kehidupan berbangsa dan bernegara.
           </p>
         </div>
 
@@ -139,16 +139,16 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-surface-container p-6 rounded-xl border border-outline/20 hover:bg-surface-container-high transition-colors">
-                <div className="text-on-surface font-semibold mb-2">Web Development</div>
-                <div className="text-sm text-on-surface-variant">HTML, CSS, Responsive Design</div>
+                <div className="text-on-surface font-semibold mb-2">Filosofi Pancasila</div>
+                <div className="text-sm text-on-surface-variant">Sejarah, makna, dan filosofi Pancasila</div>
               </div>
               <div className="bg-surface-container p-6 rounded-xl border border-outline/20 hover:bg-surface-container-high transition-colors">
-                <div className="text-on-surface font-semibold mb-2">JavaScript</div>
-                <div className="text-sm text-on-surface-variant">ES6+, DOM, Functions</div>
+                <div className="text-on-surface font-semibold mb-2">Nilai-Nilai Sila Pancasila</div>
+                <div className="text-sm text-on-surface-variant">Pemahaman mendalam setiap sila</div>
               </div>
               <div className="bg-surface-container p-6 rounded-xl border border-outline/20 hover:bg-surface-container-high transition-colors">
-                <div className="text-on-surface font-semibold mb-2">Programming</div>
-                <div className="text-sm text-on-surface-variant">Logic, Algorithms, Best Practices</div>
+                <div className="text-on-surface font-semibold mb-2">Pengamalan Pancasila</div>
+                <div className="text-sm text-on-surface-variant">Implementasi dalam kehidupan sehari-hari</div>
               </div>
             </div>
           </div>
@@ -213,9 +213,9 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
         {/* Programming Quote */}
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold text-center text-on-surface">
-            Programming Wisdom
+            Wisdom
           </h3>
-          <ProgrammingQuote />
+          <PancasilaQuote />
         </div>
 
         {/* Stats Dashboard */}
