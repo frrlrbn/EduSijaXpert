@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Clock, Target, RotateCcw, Share2, TrendingUp, Home } from 'lucide-react';
+import { Trophy, Clock, Target, Share2, TrendingUp } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import ProgressBar from '../ui/ProgressBar';
@@ -10,14 +10,26 @@ import Leaderboard from '../ui/Leaderboard';
 import StatsDashboard from '../ui/StatsDashboard';
 
 const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted: scoreAlreadySubmitted = false }) => {
-  const { correctAnswers, totalQuestions, percentage, grade, timeSpent } = results;
+  // Safety check and defaults for results
+  const safeResults = results || {};
+  const { 
+    correctAnswers = 0, 
+    totalQuestions = 0, 
+    percentage = 0, 
+    grade = 'E', 
+    timeSpent = 0,
+    avgTimePerQuestion = 0
+  } = safeResults;
+  
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [statsUpdated, setStatsUpdated] = useState(false);
 
   // Update API stats when component mounts (stats are safe to update multiple times)
   useEffect(() => {
-    updateStats();
-  }, []); // Only run once when component mounts
+    if (totalQuestions > 0) { // Only update if we have valid results
+      updateStats();
+    }
+  }, [totalQuestions]); // Depend on totalQuestions to ensure we have data
 
   const updateStats = async () => {
     try {
@@ -95,11 +107,6 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
 
   const achievements = getAchievementBadges(percentage, timeSpent, totalQuestions);
 
-  const handleBackToHome = () => {
-    // Refresh the entire website to go back to welcome screen
-    window.location.reload();
-  };
-
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -124,18 +131,33 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
       animate="visible"
       className="w-full max-w-4xl mx-auto space-y-4 md:space-y-6 px-2 md:px-0"
     >
-      {/* Main Results Card */}
-      <Card elevation={3} className="p-4 md:p-6 lg:p-8 text-center">
-        <motion.div variants={itemVariants}>
-          <div className="mb-4 md:mb-6">
-            <Trophy size={48} className="md:w-16 md:h-16 mx-auto text-warning mb-3 md:mb-4" />
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-surface mb-2">
-              Quiz Selesai!
-            </h1>
-            <p className="text-base md:text-lg text-on-surface-variant">
-              {getGradeMessage(percentage)}
+      {/* Show loading or error message if no valid results */}
+      {totalQuestions === 0 ? (
+        <Card elevation={3} className="p-6 text-center">
+          <div className="space-y-4">
+            <Clock size={48} className="mx-auto text-on-surface-variant mb-4" />
+            <h2 className="text-xl font-semibold text-on-surface">
+              Memuat Hasil Quiz...
+            </h2>
+            <p className="text-on-surface-variant">
+              Sedang mengambil data hasil quiz Anda. Mohon tunggu sebentar.
             </p>
           </div>
+        </Card>
+      ) : (
+        <>
+          {/* Main Results Card */}
+          <Card elevation={3} className="p-4 md:p-6 lg:p-8 text-center">
+            <motion.div variants={itemVariants}>
+              <div className="mb-4 md:mb-6">
+                <Trophy size={48} className="md:w-16 md:h-16 mx-auto text-warning mb-3 md:mb-4" />
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-surface mb-2">
+                  Quiz Selesai!
+                </h1>
+                <p className="text-base md:text-lg text-on-surface-variant">
+                  {getGradeMessage(percentage)}
+                </p>
+              </div>
         </motion.div>
 
         {/* Grade Circle - Responsive */}
@@ -324,14 +346,14 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           <Button
             variant="filled"
             size="large"
-            onClick={onRestart}
-            icon={<RotateCcw size={16} className="md:w-[18px] md:h-[18px]" />}
-            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px]"
+            onClick={onReview}
+            icon={<Target size={16} className="md:w-[18px] md:h-[18px]" />}
+            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px] bg-primary text-on-primary hover:bg-primary/90"
           >
-            Ulangi Quiz
+            Review Jawaban
           </Button>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -341,11 +363,11 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           <Button
             variant="outlined"
             size="large"
-            onClick={onReview}
-            icon={<Target size={16} className="md:w-[18px] md:h-[18px]" />}
-            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px]"
+            onClick={() => setShowLeaderboard(true)}
+            icon={<Trophy size={16} className="md:w-[18px] md:h-[18px]" />}
+            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px] border-warning text-warning hover:bg-warning/10"
           >
-            Review Jawaban
+            Leaderboard
           </Button>
         </motion.div>
 
@@ -358,25 +380,8 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           <Button
             variant="tonal"
             size="large"
-            onClick={() => setShowLeaderboard(true)}
-            icon={<Trophy size={16} className="md:w-[18px] md:h-[18px]" />}
-            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px]"
-          >
-            Leaderboard
-          </Button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8 }}
-          className="w-full md:w-auto"
-        >
-          <Button
-            variant="text"
-            size="medium"
             icon={<Share2 size={16} className="md:w-[18px] md:h-[18px]" />}
-            className="w-full md:w-auto md:flex-none text-sm md:text-base py-2 min-h-[44px] md:min-h-[40px]"
+            className="w-full md:w-auto md:flex-none text-sm md:text-base py-3 md:py-2 min-h-[48px] md:min-h-[44px] bg-secondary/20 text-secondary hover:bg-secondary/30"
             onClick={() => {
               if (navigator.share) {
                 navigator.share({
@@ -389,24 +394,6 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           >
             <span className="hidden sm:inline">Bagikan</span>
             <span className="sm:hidden">Share</span>
-          </Button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.9 }}
-          className="w-full md:w-auto"
-        >
-          <Button
-            variant="outlined"
-            size="medium"
-            icon={<Home size={16} className="md:w-[18px] md:h-[18px]" />}
-            className="w-full md:w-auto md:flex-none text-sm md:text-base py-2 min-h-[44px] md:min-h-[40px] border-primary text-primary hover:bg-primary hover:text-on-primary"
-            onClick={handleBackToHome}
-          >
-            <span className="hidden sm:inline">Back to Home</span>
-            <span className="sm:hidden">Home</span>
           </Button>
         </motion.div>
       </motion.div>
@@ -431,6 +418,8 @@ const QuizResults = ({ results, playerName, onRestart, onReview, scoreSubmitted:
           <StatsDashboard />
         </div>
       </motion.div>
+        </>
+      )}
     </motion.div>
   );
 };

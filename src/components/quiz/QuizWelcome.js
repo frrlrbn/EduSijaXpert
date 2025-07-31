@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, BookOpen, Clock, Target, Brain, Trophy, BarChart3, User } from 'lucide-react';
+import { Play, BookOpen, Clock, Target, Brain, Trophy, BarChart3, User, Eye } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import PancasilaQuote from '../ui/PancasilaQuote';
 import StatsDashboard from '../ui/StatsDashboard';
 
-const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
+const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAnswers, storedResult }) => {
   const [playerName, setPlayerName] = useState('');
   const [showNameInput, setShowNameInput] = useState(false);
 
@@ -130,6 +130,67 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
         ))}
       </motion.div>
 
+      {/* Previous Quiz Result */}
+      {hasCompletedQuiz && storedResult && (
+        <motion.div variants={itemVariants}>
+          <Card className="p-8 bg-warning-container/20 border-warning/30">
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center space-x-2 text-warning">
+                <Clock size={24} />
+                <h3 className="text-2xl font-bold">Quiz Sudah Diselesaikan</h3>
+              </div>
+              
+              <div className="bg-surface-container/50 rounded-xl p-6 space-y-3">
+                <div className="text-lg text-on-surface">
+                  <strong>Hasil Terakhir:</strong>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-on-surface">{storedResult.score}</div>
+                    <div className="text-sm text-on-surface-variant">Skor</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-on-surface">
+                      {storedResult.correctCount}/{storedResult.totalQuestions}
+                    </div>
+                    <div className="text-sm text-on-surface-variant">Benar</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-on-surface">
+                      {Math.round((storedResult.correctCount / storedResult.totalQuestions) * 100)}%
+                    </div>
+                    <div className="text-sm text-on-surface-variant">Akurasi</div>
+                  </div>
+                </div>
+                
+                {storedResult.playerName && (
+                  <div className="text-center pt-2 border-t border-outline/20">
+                    <div className="text-sm text-on-surface-variant">Dikerjakan oleh:</div>
+                    <div className="font-semibold text-on-surface">{storedResult.playerName}</div>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-on-surface-variant">
+                  Anda sudah menyelesaikan quiz ini. Anda dapat melihat jawaban-jawaban sebelumnya.
+                </p>
+                
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={onReviewAnswers}
+                  icon={<Eye size={20} />}
+                  className="px-8 py-3 text-warning border-warning hover:bg-warning/10 rounded-xl"
+                >
+                  Lihat Jawaban Sebelumnya
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
       {/* Quiz Categories Preview */}
       <motion.div variants={itemVariants}>
         <Card className="p-8 bg-surface-container/30 border-outline/20">
@@ -155,58 +216,60 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions }) => {
         </Card>
       </motion.div>
 
-      {/* Start Quiz Section */}
-      <motion.div 
-        variants={itemVariants}
-        className="text-center mb-8 space-y-6"
-      >
-        {showNameInput && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-md mx-auto"
-          >
-            <div className="relative">
-              <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant" />
-              <input
-                type="text"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Masukkan nama Anda"
-                className="w-full pl-10 pr-4 py-4 bg-surface-container border border-outline/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-on-surface/20 focus:border-on-surface/30 text-on-surface placeholder:text-on-surface-variant transition-all"
-                maxLength={50}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && playerName.trim()) {
-                    handleStartClick();
-                  }
-                }}
-                autoFocus
-              />
-            </div>
-          </motion.div>
-        )}
-        
-        <Button
-          variant="filled"
-          size="large"
-          onClick={handleStartClick}
-          icon={<Play size={20} />}
-          className="px-16 py-4 text-lg font-semibold bg-on-surface text-surface hover:bg-on-surface/90 border-0 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-          disabled={showNameInput && !playerName.trim()}
+      {/* Start Quiz Section - Only show if quiz not completed */}
+      {!hasCompletedQuiz && (
+        <motion.div 
+          variants={itemVariants}
+          className="text-center mb-8 space-y-6"
         >
-          {showNameInput ? 'Mulai Quiz' : 'Mulai Quiz'}
-        </Button>
-        
-        {showNameInput && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-sm text-on-surface-variant bg-surface-container/50 rounded-xl py-2 px-4 inline-block"
+          {showNameInput && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-md mx-auto"
+            >
+              <div className="relative">
+                <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant" />
+                <input
+                  type="text"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  placeholder="Masukkan nama Anda"
+                  className="w-full pl-10 pr-4 py-4 bg-surface-container border border-outline/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-on-surface/20 focus:border-on-surface/30 text-on-surface placeholder:text-on-surface-variant transition-all"
+                  maxLength={50}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && playerName.trim()) {
+                      handleStartClick();
+                    }
+                  }}
+                  autoFocus
+                />
+              </div>
+            </motion.div>
+          )}
+          
+          <Button
+            variant="filled"
+            size="large"
+            onClick={handleStartClick}
+            icon={<Play size={20} />}
+            className="px-16 py-4 text-lg font-semibold bg-on-surface text-surface hover:bg-on-surface/90 border-0 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            disabled={showNameInput && !playerName.trim()}
           >
-            Nama akan ditampilkan di leaderboard
-          </motion.p>
-        )}
-      </motion.div>
+            {showNameInput ? 'Mulai Quiz' : 'Mulai Quiz'}
+          </Button>
+          
+          {showNameInput && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-on-surface-variant bg-surface-container/50 rounded-xl py-2 px-4 inline-block"
+            >
+              Nama akan ditampilkan di leaderboard
+            </motion.p>
+          )}
+        </motion.div>
+      )}
 
       {/* API Integration Section */}
       <motion.div variants={itemVariants} className="space-y-12">

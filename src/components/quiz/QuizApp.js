@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuiz } from '@/hooks/useQuiz';
+import { useQuizSession } from '@/hooks/useQuizSession';
 import QuizWelcome from './QuizWelcome';
 import QuizHeader from './QuizHeader';
 import QuizCard from './QuizCard';
@@ -19,6 +20,18 @@ const QuizApp = () => {
   const [reviewMode, setReviewMode] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [scoreSubmitted, setScoreSubmitted] = useState(false); // Track if score is already submitted
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+  
+  // Quiz session management
+  const {
+    hasCompletedQuiz,
+    storedAnswers,
+    storedResults,
+    isLoading: sessionLoading,
+    saveQuizSession,
+    clearQuizSession,
+    getSessionInfo
+  } = useQuizSession();
   
   const {
     currentQuestionIndex,
@@ -43,7 +56,25 @@ const QuizApp = () => {
     bestStreak
   } = useQuiz();
 
+  // Initialize from stored session if exists
+  useEffect(() => {
+    if (hasCompletedQuiz && storedResults && currentView === 'welcome') {
+      const sessionInfo = getSessionInfo();
+      if (sessionInfo?.playerName) {
+        setPlayerName(sessionInfo.playerName);
+      }
+      setCurrentView('results');
+      setScoreSubmitted(true);
+    }
+  }, [hasCompletedQuiz, storedResults, getSessionInfo, currentView]);
+
   const handleStartQuiz = (name) => {
+    // Prevent starting if quiz already completed
+    if (hasCompletedQuiz) {
+      alert('Anda sudah menyelesaikan quiz ini. Silakan lihat hasil atau review jawaban.');
+      return;
+    }
+    
     setPlayerName(name);
     startQuiz();
     setCurrentView('quiz');
@@ -53,6 +84,14 @@ const QuizApp = () => {
 
   const handleFinishQuiz = async () => {
     finishQuiz();
+    const results = getResults();
+    
+    // Save quiz session to cookie
+    const saved = saveQuizSession(results, selectedAnswers, playerName);
+    if (saved) {
+      console.log('Quiz session saved successfully');
+    }
+    
     setCurrentView('results');
     
     // Submit score only when quiz is finished for the first time
@@ -123,6 +162,12 @@ const QuizApp = () => {
   };
 
   const handleRestartQuiz = () => {
+    // Only allow restart if no previous session exists
+    if (hasCompletedQuiz) {
+      alert('Anda sudah menyelesaikan quiz ini sebelumnya. Tidak bisa mengulang quiz.');
+      return;
+    }
+    
     restartQuiz();
     setCurrentView('quiz');
     setReviewMode(false);
@@ -130,8 +175,20 @@ const QuizApp = () => {
   };
 
   const handleReviewAnswers = () => {
-    setCurrentView('review');
-    setReviewMode(true);
+    // Load stored answers and results for review from session
+    if (storedAnswers && typeof storedAnswers === 'object') {
+      // Set the stored answers as current answers
+      Object.keys(storedAnswers).forEach(questionId => {
+        const answerIndex = storedAnswers[questionId];
+        if (answerIndex !== null && answerIndex !== undefined) {
+          selectAnswer(parseInt(questionId), answerIndex);
+        }
+      });
+      
+      // Set review mode and go to review view
+      setReviewMode(true);
+      setCurrentView('review');
+    }
   };
 
   const handleBackToResults = () => {
@@ -169,6 +226,9 @@ const QuizApp = () => {
               <QuizWelcome 
                 onStartQuiz={handleStartQuiz}
                 totalQuestions={totalQuestions}
+                hasCompletedQuiz={hasCompletedQuiz}
+                onReviewAnswers={handleReviewAnswers}
+                storedResult={storedResults}
               />
             </motion.div>
           )}
@@ -213,9 +273,10 @@ const QuizApp = () => {
                 canGoNext={currentQuestionIndex < totalQuestions - 1}
                 isAnswerSelected={isAnswerSelected()}
                 isLastQuestion={currentQuestionIndex === totalQuestions - 1}
-                onPrevious={previousQuestion}
+                onPrevious={reviewMode ? previousQuestion : () => {}} // Enable previous only in review mode
                 onNext={nextQuestion}
                 onFinish={handleFinishQuiz}
+                isReviewMode={reviewMode}
               />
               
               <KeyboardShortcuts
@@ -260,7 +321,7 @@ const QuizApp = () => {
               transition={pageTransition}
             >
               <QuizResults
-                results={getResults()}
+                results={storedResults || getResults()}
                 playerName={playerName}
                 onRestart={handleRestartQuiz}
                 onReview={handleReviewAnswers}
@@ -310,9 +371,10 @@ const QuizApp = () => {
                 canGoNext={currentQuestionIndex < totalQuestions - 1}
                 isAnswerSelected={true}
                 isLastQuestion={currentQuestionIndex === totalQuestions - 1}
-                onPrevious={previousQuestion}
+                onPrevious={previousQuestion} // Always enabled in review mode
                 onNext={nextQuestion}
                 onFinish={handleBackToResults}
+                isReviewMode={true}
               />
               
               <KeyboardShortcuts

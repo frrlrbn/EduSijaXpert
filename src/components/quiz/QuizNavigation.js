@@ -12,7 +12,8 @@ const QuizNavigation = ({
   onPrevious, 
   onNext, 
   onFinish,
-  disabled = false 
+  disabled = false,
+  isReviewMode = false // New prop to detect review mode
 }) => {
   return (
     <motion.div
@@ -21,18 +22,23 @@ const QuizNavigation = ({
       transition={{ delay: 0.4 }}
       className="flex justify-between items-center w-full max-w-3xl mx-auto mt-6 md:mt-8 gap-2 md:gap-4"
     >
-      {/* Previous Button */}
-      <Button
-        variant="outlined"
-        size="medium"
-        disabled={!canGoPrevious || disabled}
-        onClick={onPrevious}
-        icon={<ChevronLeft size={16} className="md:w-[18px] md:h-[18px]" />}
-        className="flex-shrink-0 text-sm md:text-base px-3 md:px-4 py-2 md:py-3"
-      >
-        <span className="hidden sm:inline">Sebelumnya</span>
-        <span className="sm:hidden">Prev</span>
-      </Button>
+      {/* Previous Button - Enabled only in review mode */}
+      {isReviewMode ? (
+        <Button
+          variant="outlined"
+          size="medium"
+          disabled={!canGoPrevious || disabled}
+          onClick={onPrevious}
+          icon={<ChevronLeft size={16} className="md:w-[18px] md:h-[18px]" />}
+          className="flex-shrink-0 text-sm md:text-base px-3 md:px-4 py-2 md:py-3"
+        >
+          <span className="hidden sm:inline">Sebelumnya</span>
+          <span className="sm:hidden">Prev</span>
+        </Button>
+      ) : (
+        /* Placeholder to maintain layout in quiz mode */
+        <div className="flex-shrink-0 w-20 md:w-28"></div>
+      )}
 
       {/* Answer Status Indicator */}
       <motion.div
