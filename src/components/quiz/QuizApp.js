@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuiz } from '@/hooks/useQuiz';
 import { useQuizSession } from '@/hooks/useQuizSession';
+import { useQuizReview } from '@/hooks/useQuizReview';
 import QuizWelcome from './QuizWelcome';
 import QuizHeader from './QuizHeader';
 import QuizCard from './QuizCard';
@@ -27,6 +28,7 @@ const QuizApp = () => {
     hasCompletedQuiz,
     storedAnswers,
     storedResults,
+    storedQuestions,
     isLoading: sessionLoading,
     saveQuizSession,
     clearQuizSession,
@@ -53,8 +55,12 @@ const QuizApp = () => {
     getQuestionsAnswered,
     getAverageTimePerQuestion,
     currentStreak,
-    bestStreak
+    bestStreak,
+    randomizedQuestions
   } = useQuiz();
+  
+  // Review mode hook for stored questions
+  const reviewQuizHook = useQuizReview(storedQuestions, storedAnswers);
 
   // Initialize from stored session if exists
   useEffect(() => {
@@ -86,8 +92,8 @@ const QuizApp = () => {
     finishQuiz();
     const results = getResults();
     
-    // Save quiz session to cookie
-    const saved = saveQuizSession(results, selectedAnswers, playerName);
+    // Save quiz session to cookie with randomized questions
+    const saved = saveQuizSession(results, selectedAnswers, playerName, randomizedQuestions);
     if (saved) {
       console.log('Quiz session saved successfully');
     }
@@ -175,19 +181,12 @@ const QuizApp = () => {
   };
 
   const handleReviewAnswers = () => {
-    // Load stored answers and results for review from session
-    if (storedAnswers && typeof storedAnswers === 'object') {
-      // Set the stored answers as current answers
-      Object.keys(storedAnswers).forEach(questionId => {
-        const answerIndex = storedAnswers[questionId];
-        if (answerIndex !== null && answerIndex !== undefined) {
-          selectAnswer(parseInt(questionId), answerIndex);
-        }
-      });
-      
-      // Set review mode and go to review view
+    // Simply switch to review mode - the useQuizReview hook will handle the stored data
+    if (storedQuestions && storedQuestions.length > 0 && storedAnswers) {
       setReviewMode(true);
       setCurrentView('review');
+    } else {
+      alert('Data soal review tidak tersedia. Silakan mulai quiz baru.');
     }
   };
 
@@ -341,25 +340,25 @@ const QuizApp = () => {
               className="space-y-6"
             >
               <QuizHeader
-                currentQuestion={currentQuestionIndex + 1}
-                totalQuestions={totalQuestions}
-                progress={getProgress()}
+                currentQuestion={reviewQuizHook.currentQuestionIndex + 1}
+                totalQuestions={reviewQuizHook.totalQuestions}
+                progress={reviewQuizHook.getProgress()}
                 timeSpent={timeSpent}
-                score={getResults().percentage}
+                score={reviewQuizHook.getResults().percentage}
                 showScore={true}
               />
 
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={currentQuestionIndex}
+                  key={reviewQuizHook.currentQuestionIndex}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <QuizCard
-                    question={getCurrentQuestion()}
-                    selectedAnswer={selectedAnswers[getCurrentQuestion()?.id]}
+                    question={reviewQuizHook.getCurrentQuestion()}
+                    selectedAnswer={reviewQuizHook.selectedAnswers[reviewQuizHook.getCurrentQuestion()?.id]}
                     onSelectAnswer={null}
                     showCorrectAnswer={true}
                   />
@@ -367,39 +366,52 @@ const QuizApp = () => {
               </AnimatePresence>
 
               <QuizNavigation
-                canGoPrevious={currentQuestionIndex > 0}
-                canGoNext={currentQuestionIndex < totalQuestions - 1}
+                canGoPrevious={reviewQuizHook.currentQuestionIndex > 0}
+                canGoNext={reviewQuizHook.currentQuestionIndex < reviewQuizHook.totalQuestions - 1}
                 isAnswerSelected={true}
-                isLastQuestion={currentQuestionIndex === totalQuestions - 1}
-                onPrevious={previousQuestion} // Always enabled in review mode
-                onNext={nextQuestion}
+                isLastQuestion={reviewQuizHook.currentQuestionIndex === reviewQuizHook.totalQuestions - 1}
+                onPrevious={reviewQuizHook.previousQuestion} // Always enabled in review mode
+                onNext={reviewQuizHook.nextQuestion}
                 onFinish={handleBackToResults}
                 isReviewMode={true}
               />
               
               <KeyboardShortcuts
-                onNext={nextQuestion}
-                onPrevious={previousQuestion}
+                onNext={reviewQuizHook.nextQuestion}
+                onPrevious={reviewQuizHook.previousQuestion}
                 onFinish={handleBackToResults}
-                canGoNext={currentQuestionIndex < totalQuestions - 1}
-                canGoPrevious={currentQuestionIndex > 0}
-                isLastQuestion={currentQuestionIndex === totalQuestions - 1}
+                canGoNext={reviewQuizHook.currentQuestionIndex < reviewQuizHook.totalQuestions - 1}
+                canGoPrevious={reviewQuizHook.currentQuestionIndex > 0}
+                isLastQuestion={reviewQuizHook.currentQuestionIndex === reviewQuizHook.totalQuestions - 1}
                 isAnswerSelected={true}
               />
               
               <QuizStats
-                questionsAnswered={getQuestionsAnswered()}
-                totalQuestions={totalQuestions}
+                questionsAnswered={reviewQuizHook.totalQuestions}
+                totalQuestions={reviewQuizHook.totalQuestions}
                 timeSpent={timeSpent}
-                currentStreak={currentStreak}
-                averageTimePerQuestion={getAverageTimePerQuestion()}
+                currentStreak={0}
+                averageTimePerQuestion={0}
               />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
       
-      <Footer />
+      {/* Footer - Hidden during quiz and review, shown on welcome and results */}
+      <AnimatePresence>
+        {(currentView === 'welcome' || currentView === 'results') && (
+          <motion.div
+            key="footer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

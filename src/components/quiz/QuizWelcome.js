@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, BookOpen, Clock, Target, Brain, Trophy, BarChart3, User, Eye } from 'lucide-react';
 import Card from '../ui/Card';
@@ -11,6 +11,19 @@ import StatsDashboard from '../ui/StatsDashboard';
 const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAnswers, storedResult }) => {
   const [playerName, setPlayerName] = useState('');
   const [showNameInput, setShowNameInput] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleStartClick = () => {
     if (!showNameInput) {
@@ -43,23 +56,42 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
     }
   ];
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1]
+      }
+    }
+  };
+
+  // Mobile-specific variants for smaller movements
+  const mobileItemVariants = {
+    hidden: { opacity: 0, y: 8 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.3,
+        ease: [0.25, 0.1, 0.25, 1]
+      }
+    }
+  };
+
+  // Choose appropriate variants based on device
+  const currentItemVariants = isMobile ? mobileItemVariants : itemVariants;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
+        duration: isMobile ? 0.3 : 0.4,
+        staggerChildren: isMobile ? 0.06 : 0.08
       }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5 }
     }
   };
 
@@ -68,10 +100,10 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="max-w-4xl mx-auto space-y-12"
+      className="max-w-4xl mx-auto space-y-12 overflow-x-hidden"
     >
       {/* Hero Section */}
-      <motion.div variants={itemVariants} className="text-center space-y-6">
+      <motion.div variants={currentItemVariants} className="text-center space-y-6">
         <div className="inline-flex items-center justify-center w-24 h-24 bg-surface-container rounded-3xl mb-8 shadow-lg">
           <Brain size={48} className="text-on-surface" />
         </div>
@@ -82,7 +114,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
             <span className="block text-on-surface/70">Quiz Pancasila</span>
           </h1>
           <p className="text-xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed">
-            Uji pemahaman Anda tentang nilai-nilai Pancasila dengan {totalQuestions} pertanyaan pilihan berganda yang mencakup 
+            Uji pemahaman Anda tentang nilai-nilai Pancasila dengan {totalQuestions} pertanyaan pilihan berganda yang dipilih secara acak dari 40 soal yang mencakup 
             filosofi, implementasi, dan pengamalan Pancasila dalam kehidupan berbangsa dan bernegara.
           </p>
         </div>
@@ -90,22 +122,22 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
         <div className="inline-flex items-center justify-center gap-8 text-sm text-on-surface-variant bg-surface-container/50 rounded-2xl py-4 px-6">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-on-surface rounded-full"></div>
-            <span>{totalQuestions} Pertanyaan</span>
+            <span>{totalQuestions} dari 40 Soal</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-on-surface/70 rounded-full"></div>
-            <span>Tanpa Batas Waktu</span>
+            <span>Urutan Acak</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-on-surface/50 rounded-full"></div>
-            <span>Feedback Instant</span>
+            <span>Tanpa Batas Waktu</span>
           </div>
         </div>
       </motion.div>
 
       {/* Features Grid */}
       <motion.div 
-        variants={itemVariants}
+        variants={currentItemVariants}
         className="grid md:grid-cols-2 gap-6"
       >
         {features.map((feature, index) => (
@@ -132,7 +164,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
 
       {/* Previous Quiz Result */}
       {hasCompletedQuiz && storedResult && (
-        <motion.div variants={itemVariants}>
+        <motion.div variants={currentItemVariants}>
           <Card className="p-8 bg-warning-container/20 border-warning/30">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center space-x-2 text-warning">
@@ -192,7 +224,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
       )}
 
       {/* Quiz Categories Preview */}
-      <motion.div variants={itemVariants}>
+      <motion.div variants={currentItemVariants}>
         <Card className="p-8 bg-surface-container/30 border-outline/20">
           <div className="text-center space-y-6">
             <h3 className="text-2xl font-bold text-on-surface">
@@ -219,13 +251,14 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
       {/* Start Quiz Section - Only show if quiz not completed */}
       {!hasCompletedQuiz && (
         <motion.div 
-          variants={itemVariants}
+          variants={currentItemVariants}
           className="text-center mb-8 space-y-6"
         >
           {showNameInput && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: isMobile ? -10 : -20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: isMobile ? 0.2 : 0.3, ease: "easeOut" }}
               className="max-w-md mx-auto"
             >
               <div className="relative">
@@ -263,6 +296,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              transition={{ duration: isMobile ? 0.2 : 0.3, delay: 0.1 }}
               className="text-sm text-on-surface-variant bg-surface-container/50 rounded-xl py-2 px-4 inline-block"
             >
               Nama akan ditampilkan di leaderboard
@@ -272,7 +306,7 @@ const QuizWelcome = ({ onStartQuiz, totalQuestions, hasCompletedQuiz, onReviewAn
       )}
 
       {/* API Integration Section */}
-      <motion.div variants={itemVariants} className="space-y-12">
+      <motion.div variants={currentItemVariants} className="space-y-12">
         {/* Programming Quote */}
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold text-center text-on-surface">

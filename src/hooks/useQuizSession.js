@@ -3,11 +3,13 @@ import Cookies from 'js-cookie';
 
 const QUIZ_SESSION_KEY = 'pancasila_quiz_session';
 const QUIZ_ANSWERS_KEY = 'pancasila_quiz_answers';
+const QUIZ_QUESTIONS_KEY = 'pancasila_quiz_questions';
 
 export const useQuizSession = () => {
   const [hasCompletedQuiz, setHasCompletedQuiz] = useState(false);
   const [storedAnswers, setStoredAnswers] = useState([]);
   const [storedResults, setStoredResults] = useState(null);
+  const [storedQuestions, setStoredQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export const useQuizSession = () => {
     try {
       const sessionData = Cookies.get(QUIZ_SESSION_KEY);
       const answersData = Cookies.get(QUIZ_ANSWERS_KEY);
+      const questionsData = Cookies.get(QUIZ_QUESTIONS_KEY);
       
       if (sessionData) {
         const session = JSON.parse(sessionData);
@@ -27,17 +30,22 @@ export const useQuizSession = () => {
         if (answersData) {
           setStoredAnswers(JSON.parse(answersData));
         }
+        
+        if (questionsData) {
+          setStoredQuestions(JSON.parse(questionsData));
+        }
       }
     } catch (error) {
       console.error('Error reading quiz session:', error);
       // Clear corrupted data
       Cookies.remove(QUIZ_SESSION_KEY);
       Cookies.remove(QUIZ_ANSWERS_KEY);
+      Cookies.remove(QUIZ_QUESTIONS_KEY);
     }
     setIsLoading(false);
   };
 
-  const saveQuizSession = (results, answers, playerName) => {
+  const saveQuizSession = (results, answers, playerName, questions = []) => {
     try {
       const sessionData = {
         completedAt: new Date().toISOString(),
@@ -56,6 +64,15 @@ export const useQuizSession = () => {
         expires: 1,
         sameSite: 'strict'
       });
+      
+      // Save the randomized questions used in this quiz session
+      if (questions.length > 0) {
+        Cookies.set(QUIZ_QUESTIONS_KEY, JSON.stringify(questions), { 
+          expires: 1,
+          sameSite: 'strict'
+        });
+        setStoredQuestions(questions);
+      }
 
       setHasCompletedQuiz(true);
       setStoredResults(results);
@@ -71,9 +88,11 @@ export const useQuizSession = () => {
   const clearQuizSession = () => {
     Cookies.remove(QUIZ_SESSION_KEY);
     Cookies.remove(QUIZ_ANSWERS_KEY);
+    Cookies.remove(QUIZ_QUESTIONS_KEY);
     setHasCompletedQuiz(false);
     setStoredAnswers([]);
     setStoredResults(null);
+    setStoredQuestions([]);
   };
 
   const getSessionInfo = () => {
@@ -92,6 +111,7 @@ export const useQuizSession = () => {
     hasCompletedQuiz,
     storedAnswers,
     storedResults,
+    storedQuestions,
     isLoading,
     saveQuizSession,
     clearQuizSession,

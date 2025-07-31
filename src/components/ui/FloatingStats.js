@@ -63,7 +63,7 @@ const FloatingStats = ({
   ];
 
   return (
-    <div className="md:hidden fixed bottom-4 right-4 z-50">
+    <div className="md:hidden fixed bottom-4 left-4 z-50">
       <motion.div
         layout
         className="bg-surface-container border border-outline/30 rounded-2xl shadow-lg backdrop-blur-sm"

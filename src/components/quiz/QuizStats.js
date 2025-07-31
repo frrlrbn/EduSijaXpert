@@ -7,8 +7,7 @@ import Card from '../ui/Card';
 const QuizStats = ({ 
   questionsAnswered, 
   totalQuestions, 
-  timeSpent, 
-  currentStreak,
+  timeSpent,
   averageTimePerQuestion 
 }) => {
   const formatTime = (seconds) => {
@@ -22,25 +21,19 @@ const QuizStats = ({
 
   const stats = [
     {
-      icon: <Target size={16} />,
+      icon: <Target size={12} className="lg:w-4 lg:h-4" />,
       label: 'Progress',
       value: `${questionsAnswered}/${totalQuestions}`,
       secondary: `${Math.round(completionRate)}%`
     },
     {
-      icon: <Clock size={16} />,
+      icon: <Clock size={12} className="lg:w-4 lg:h-4" />,
       label: 'Waktu',
       value: formatTime(timeSpent),
       secondary: `~${Math.round(avgTime)}s/soal`
     },
     {
-      icon: <TrendingUp size={16} />,
-      label: 'Streak',
-      value: currentStreak,
-      secondary: 'berturut-turut'
-    },
-    {
-      icon: <Award size={16} />,
+      icon: <Award size={12} className="lg:w-4 lg:h-4" />,
       label: 'Kecepatan',
       value: avgTime < 30 ? 'Cepat' : avgTime < 60 ? 'Sedang' : 'Santai',
       secondary: ''
@@ -51,35 +44,36 @@ const QuizStats = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-6 left-6 z-40 hidden lg:block"
+      className="fixed bottom-4 left-4 z-40 lg:bottom-6 lg:left-6 max-w-[140px] lg:max-w-none"
     >
-      <Card elevation={2} className="p-4 bg-surface-container-high">
-        <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
-          <TrendingUp size={16} />
-          Statistik Live
+      <Card elevation={2} className="p-2 lg:p-4 bg-surface-container-high border border-outline/20">
+        <h4 className="text-xs lg:text-sm font-semibold text-on-surface mb-2 lg:mb-3 flex items-center gap-1 lg:gap-2">
+          <TrendingUp size={12} className="lg:w-4 lg:h-4 flex-shrink-0" />
+          <span className="hidden sm:inline truncate">Statistik Live</span>
+          <span className="sm:hidden truncate">Stats</span>
         </h4>
         
-        <div className="space-y-3">
+        <div className="space-y-1.5 lg:space-y-3">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-3"
+              className="flex items-center gap-1.5 lg:gap-3"
             >
-              <div className="text-primary">
+              <div className="text-primary flex-shrink-0">
                 {stat.icon}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs text-on-surface-variant">
+                <div className="text-xs text-on-surface-variant truncate">
                   {stat.label}
                 </div>
-                <div className="text-sm font-medium text-on-surface truncate">
+                <div className="text-xs lg:text-sm font-medium text-on-surface truncate">
                   {stat.value}
                 </div>
                 {stat.secondary && (
-                  <div className="text-xs text-on-surface-variant">
+                  <div className="text-xs text-on-surface-variant truncate">
                     {stat.secondary}
                   </div>
                 )}

@@ -19,34 +19,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "edufrl. - Test Your Programming Knowledge",
-  description: "Advanced interactive quiz app built with Next.js. Test your web development and programming skills with 25 challenging questions. Features Material 3 design, dark mode, and real-time statistics.",
-  keywords: "quiz, programming, web development, javascript, react, nextjs, tailwind css, interactive quiz, coding test",
-  authors: [{ name: "Prozy Dev" }],
-  creator: "Prozy Dev",
-  publisher: "Prozy Dev",
+  title: "edufrl. - Quiz Pancasila Indonesia",
+  description: "Uji pemahaman Anda tentang nilai-nilai Pancasila dengan quiz interaktif. 15 pertanyaan pilihan berganda yang dipilih acak dari 40 soal tentang filosofi, implementasi, dan pengamalan Pancasila dalam kehidupan berbangsa dan bernegara.",
+  keywords: "quiz pancasila, nilai pancasila, pendidikan pancasila, ideologi indonesia, sila pancasila, quiz kebangsaan, pendidikan kewarganegaraan, filosofi pancasila",
+  authors: [{ name: "edufrl" }],
+  creator: "edufrl",
+  publisher: "edufrl",
   robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "id_ID",
-    title: "edufrl. - Test Your Programming Knowledge",
-    description: "Advanced interactive quiz app built with Next.js. Test your web development and programming skills with 10 challenging questions.",
+    title: "edufrl. - Quiz Pancasila Indonesia",
+    description: "Uji pemahaman Anda tentang nilai-nilai Pancasila dengan 15 pertanyaan pilihan berganda yang dipilih secara acak. Perkuat wawasan kebangsaan Anda!",
     siteName: "edufrl.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Quiz App Preview",
+        alt: "Quiz Pancasila Preview",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "edufrl. - Test Your Programming Knowledge",
-    description: "Advanced interactive quiz app built with Next.js. Test your programming skills now!",
+    title: "edufrl. - Quiz Pancasila Indonesia",
+    description: "Uji pemahaman Anda tentang nilai-nilai Pancasila dengan quiz interaktif. Mulai sekarang!",
     images: ["/og-image.png"],
-    creator: "@prozydev",
+    creator: "@edufrl",
   },
   manifest: "/manifest.json",
 };
@@ -64,7 +64,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
-        <meta name="google-site-verification" content="your-google-verification-code" />
+        <meta name="google-site-verification" content="quiz-pancasila-verification" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
