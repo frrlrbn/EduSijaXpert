@@ -141,43 +141,6 @@ const StatsDashboard = ({ className = '' }) => {
         />
       </div>
 
-      {/* Category Performance */}
-      <Card className="p-6 mb-6">
-        <h4 className="text-lg font-semibold text-on-surface mb-4">Category Performance</h4>
-        <div className="space-y-4">
-          {stats.categoryPerformance && Object.entries(stats.categoryPerformance).map(([categoryName, score]) => {
-            return (
-              <div key={categoryName} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-on-surface font-medium">
-                    {categoryName}
-                  </span>
-                  <div className="text-right">
-                    <span className="text-on-surface font-semibold">
-                      {Math.round(score)}%
-                    </span>
-                  </div>
-                </div>
-                <div className="w-full bg-surface-container rounded-full h-2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${score}%` }}
-                    transition={{ delay: 0.5, duration: 1 }}
-                    className="bg-primary h-2 rounded-full"
-                  />
-                </div>
-              </div>
-            );
-          })}
-          
-          {(!stats.categoryPerformance || Object.keys(stats.categoryPerformance).length === 0) && (
-            <div className="text-center py-4 text-on-surface-variant">
-              No category data yet
-            </div>
-          )}
-        </div>
-      </Card>
-
       {/* Leaderboard & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Players */}
